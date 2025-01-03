@@ -1,5 +1,3 @@
-# from tkinter.constants import INSERT
-
 from django.db import models
 
 class RentCar(models.Model):

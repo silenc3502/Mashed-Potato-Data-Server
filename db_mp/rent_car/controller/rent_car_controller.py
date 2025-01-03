@@ -12,20 +12,20 @@ class RentCarController(viewsets.ViewSet):
         super().__init__()
         self.__carService = RentCarServiceImpl.getInstance()
 
-    def create_car(self, request):
-        print("Request Headers:", request.headers)  # 헤더 디버깅
-        print("Raw Request Body:", request.body)  # 요청 본문 디버깅
-        print("Parsed Request Data:", request.data)  # 파싱된 데이터 디버깅
+#    def create_car(self, request):
+#        print("Request Headers:", request.headers)  # 헤더 디버깅
+#        print("Raw Request Body:", request.body)  # 요청 본문 디버깅
+#        print("Parsed Request Data:", request.data)  # 파싱된 데이터 디버깅
 
-        serializer = RentCarSerializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                self.__carService.add_car(**serializer.validated_data)
-                return Response({"message": "Car created successfully"}, status=status.HTTP_201_CREATED)
-            except ValueError as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-        print("Serializer Errors:", serializer.errors)  # Serializer 오류 출력
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#       serializer = RentCarSerializer(data=request.data)
+#        if serializer.is_valid():
+#            try:
+#                self.__carService.add_car(**serializer.validated_data)
+#                return Response({"message": "Car created successfully"}, status=status.HTTP_201_CREATED)
+#            except ValueError as e:
+#                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+#        print("Serializer Errors:", serializer.errors)  # Serializer 오류 출력
+#        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_cars(self, request):
         cars = self.__carService.list_cars()

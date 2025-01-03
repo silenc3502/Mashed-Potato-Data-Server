@@ -8,9 +8,9 @@ router.register(r"rent_car", RentCarController, basename='rent_car')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('create-car',
-         RentCarController.as_view({ 'post': 'create_car' }),
-         name='렌트카 정보 생성'),
+#    path('create-car',
+#         RentCarController.as_view({ 'post': 'create_car' }),
+#         name='렌트카 정보 생성'),
     path('get-cars',
          RentCarController.as_view({ 'get': 'get_cars' }),
          name='렌트카 정보 리스트 획득'),
