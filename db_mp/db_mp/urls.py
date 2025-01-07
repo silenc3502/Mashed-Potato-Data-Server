@@ -3,12 +3,14 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    path("rent_car/", include('rent_car.urls')),
-    path("rent_car_review/", include('rent_car_review.urls')),
-
+    path("car/", include('car.urls')),
+    #path("review/", include('review.urls')),
+    #path("order/", include('order.urls')),
     path("account/", include('account.urls')),
     path("account-profile/", include('account_profile.urls')),
     path("cart/", include('cart.urls')),
-
+    path("kakao_oauth/", include('kakao_oauth.urls')),
+    path("authentication/", include('authentication.urls')),
+    path("payments/", include('payments.urls')),
+    path("excel/", include('excel.urls')),
 ]
