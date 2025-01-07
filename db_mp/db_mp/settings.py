@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "corsheaders",
     "rest_framework",
+
     # "account"
     # "authentication"
     # "excel"
@@ -41,6 +42,15 @@ INSTALLED_APPS = [
     # "order"
     "rent_car",
     "rent_car_review",
+    "account",
+    "account_profile",
+    "cart",
+    # "authentication",
+    # "excel",
+    # "kakao_oauth",
+    # "order",
+    # "rent_car",
+    # "review",
 ]
 
 MIDDLEWARE = [
@@ -158,8 +168,13 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ]
 }
+
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
