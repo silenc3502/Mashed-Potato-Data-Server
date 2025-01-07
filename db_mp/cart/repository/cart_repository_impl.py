@@ -4,8 +4,8 @@ from django.db.models.functions import Coalesce
 
 from cart.entity.cart import Cart
 from cart.repository.cart_repository import CartRepository
-from game_software.entity.game_software_image import GameSoftwareImage
-from game_software.entity.game_software_price import GameSoftwarePrice
+from car.entity.car_image import CarImage
+from car.entity.car_price import CarPrice
 
 
 class CartRepositoryImpl(CartRepository):
@@ -34,7 +34,7 @@ class CartRepositoryImpl(CartRepository):
 
             new_cart = Cart.objects.create(
                 account=cart.account,
-                gameSoftware=cart.gameSoftware,
+                car=cart.car,
                 quantity=cart.quantity
             )
             return new_cart
@@ -42,9 +42,9 @@ class CartRepositoryImpl(CartRepository):
             print(f"장바구니 저장 중 오류 발생: {e}")
             raise
 
-    def findCartByAccountAndGameSoftware(self, account, gameSoftware):
+    def findCartByAccountAndCar(self, account, car):
         try:
-            cart = Cart.objects.get(account=account, gameSoftware=gameSoftware)
+            cart = Cart.objects.get(account=account, car=car)
             return cart
 
         except Cart.DoesNotExist:
@@ -67,16 +67,16 @@ class CartRepositoryImpl(CartRepository):
             annotated_cart_queryset = cart_queryset.annotate(
                 price=Coalesce(
                     Subquery(
-                        GameSoftwarePrice.objects.filter(
-                            gameSoftware=OuterRef("gameSoftware")
+                        CarPrice.objects.filter(
+                            car=OuterRef("car")
                         ).values("price")[:1]
                     ),
                     Value(0),
                 ),
                 image=Coalesce(
                     Subquery(
-                        GameSoftwareImage.objects.filter(
-                            gameSoftware=OuterRef("gameSoftware")
+                        CarImage.objects.filter(
+                            car=OuterRef("car")
                         ).values("image")[:1]
                     ),
                     Value(""),
