@@ -46,13 +46,15 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "account",
+    "account_profile",
     "authentication",
     "excel",
     "kakao_oauth",
-    #"order",
+    "orders",
     "car",
     #"review",
     'payments',
+    'board',
 ]
 
 MIDDLEWARE = [
