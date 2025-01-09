@@ -51,8 +51,25 @@ class ExcelServiceImpl(ExcelService):
 
         excelDataList = self.__excelRepository.list()
         print(f"excelDataList: {excelDataList}")
-        employeeDictionary = excelDataList.values("name", "age", "city", "score", "department")
+        customerDictionary = excelDataList.values("company", "department","company_size",
+                                                  "region","sign_up_date","recent_purchase_date",
+                                                  "purchase_num","total_car_price","churn", "car_model",
+                                                  "car_price","purchase_date","score","mean_score")
 
-        dataFrame = pd.DataFrame(employeeDictionary)
+        dataFrame = pd.DataFrame(customerDictionary)
         dataFrame.to_excel(generateExcelPath, index=False, engine='openpyxl')
         return True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
