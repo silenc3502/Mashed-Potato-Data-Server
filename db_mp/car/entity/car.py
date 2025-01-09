@@ -16,3 +16,6 @@ class Car(models.Model):
 
     def getTitle(self):
         return self.title
+
+    def getCategory(self):
+        return self.category
