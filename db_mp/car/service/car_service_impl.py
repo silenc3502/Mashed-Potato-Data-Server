@@ -3,6 +3,7 @@ from django.db import transaction
 from car.repository.car_description_repository_impl import CarDescriptionRepositoryImpl
 from car.repository.car_image_repository_impl import CarImageRepositoryImpl
 from car.repository.car_price_repository_impl import CarPriceRepositoryImpl
+from car.repository.car_category_repository_impl import CarCategoryRepositoryImpl
 from car.repository.car_repository_impl import CarRepositoryImpl
 from car.service.car_service import CarService
 
@@ -18,6 +19,7 @@ class CarServiceImpl(CarService):
             cls.__instance.__carPriceRepository = CarPriceRepositoryImpl.getInstance()
             cls.__instance.__carDescriptionRepository = CarDescriptionRepositoryImpl.getInstance()
             cls.__instance.__carImageRepository = CarImageRepositoryImpl.getInstance()
+            cls.__instance.__carCategoryRepository = CarCategoryRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -31,12 +33,13 @@ class CarServiceImpl(CarService):
     def requestList(self, page, perPage):
         return self.__carRepository.list(page, perPage)
 
-    def createCar(self, title, price, description, image):
+    def createCar(self, title, price, description, image, category):
         with transaction.atomic():
             savedCar = self.__carRepository.create(title)
             self.__carPriceRepository.create(savedCar, price)
             self.__carDescriptionRepository.create(savedCar, description)
             self.__carImageRepository.create(savedCar, image)
+            self.__carCategoryRepository.create(savedCar, category)
 
     def readCar(self, id):
         with transaction.atomic():
@@ -48,13 +51,16 @@ class CarServiceImpl(CarService):
             print(f"foundCarImage: {foundCarImage}")
             foundCarDescription = self.__carDescriptionRepository.findByCar(foundCar)
             print(f"foundCarDescription: {foundCarDescription}")
+            foundCarCategory = self.__carCategoryRepository.findByCar(foundCar)
+            print(f"foundCarCategory: {foundCarCategory}")
 
             readCar = {
                 'id': foundCar.getId(),
                 'title': foundCar.getTitle(),
                 'price': foundCarPrice.getPrice(),
                 'image': foundCarImage.getImage(),
-                'description': foundCarDescription.getDescription()
+                'description': foundCarDescription.getDescription(),
+                'category': foundCarCategory.getCategory()
             }
 
             return readCar

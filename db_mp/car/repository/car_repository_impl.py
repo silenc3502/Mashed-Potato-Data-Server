@@ -1,10 +1,12 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import OuterRef, Subquery, Value
 from django.db.models.functions import Coalesce
+#from unicodedata import category
 
 from car.entity.car import Car
 from car.entity.car_image import CarImage
 from car.entity.car_price import CarPrice
+from car.entity.car_category import CarCategory
 from car.repository.car_repository import CarRepository
 
 
@@ -27,10 +29,12 @@ class CarRepositoryImpl(CarRepository):
     def list(self, page=1, perPage=8):
         priceSubQuery = CarPrice.objects.filter(car=OuterRef('pk')).values('price')[:1]
         imageSubQuery = CarImage.objects.filter(car=OuterRef('pk')).values('image')[:1]
+        categorySubQuery = CarCategory.objects.filter(car=OuterRef('pk')).values('category')[:1]
 
         carList = Car.objects.annotate(
             price=Coalesce(Subquery(priceSubQuery), Value(0)),
             image=Coalesce(Subquery(imageSubQuery), Value('')),
+            category=Coalesce(Subquery(categorySubQuery), Value('text')),
         )
 
         paginator = Paginator(carList, perPage)
@@ -48,6 +52,7 @@ class CarRepositoryImpl(CarRepository):
                 'title': car.title,
                 'price': car.price,
                 'image': car.image,
+                'category': car.category
             }
             for car in paiginatedCarDataList
         ]

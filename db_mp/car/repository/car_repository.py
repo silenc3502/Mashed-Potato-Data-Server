@@ -18,3 +18,4 @@ class CarRepository(ABC):
     @abstractmethod
     def findById(self, id):
         pass
+

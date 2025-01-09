@@ -8,7 +8,7 @@ class CarService(ABC):
         pass
 
     @abstractmethod
-    def createCar(self, title, price, description, image):
+    def createCar(self, title, price, description, image, category):
         pass
 
     @abstractmethod
