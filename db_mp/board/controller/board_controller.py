@@ -31,13 +31,13 @@ class BoardController(viewsets.ViewSet):
         postRequest = request.data
         print(f"postRequest: {postRequest}")
 
-        title = postRequest.get("title")
-        content = postRequest.get("content")
+        carModel = postRequest.get("carModel")
+        rating = postRequest.get("rating")
         userToken = postRequest.get("userToken")
 
         accountId = self.redisCacheService.getValueByKey(userToken)
 
-        savedBoard = self.boardService.requestCreate(title, content, accountId)
+        savedBoard = self.boardService.requestCreate(carModel, rating, accountId)
 
         return JsonResponse({"data": savedBoard}, status=status.HTTP_200_OK)
 
@@ -46,7 +46,7 @@ class BoardController(viewsets.ViewSet):
             if not pk:
                 return JsonResponse({"error": "ID를 제공해야 합니다."}, status=400)
 
-            print(f"requestGameSoftwareRead() -> pk: {pk}")
+            print(f"requestBoardRead() -> pk: {pk}")
             readBoard = self.boardService.requestRead(pk)
 
             return JsonResponse(readBoard, status=200)
@@ -59,18 +59,18 @@ class BoardController(viewsets.ViewSet):
             postRequest = request.data
             print(f"postRequest: {postRequest}")
 
-            title = postRequest.get("title")
-            content = postRequest.get("content")
+            carModel = postRequest.get("carModel")
+            rating = postRequest.get("rating")
 
             # 필수 항목 체크
-            if not title or not content:
-                return JsonResponse({"error": "Title and content are required."}, status=status.HTTP_400_BAD_REQUEST)
+            if not carModel or not rating:
+                return JsonResponse({"error": "Car model and rating are required."}, status=status.HTTP_400_BAD_REQUEST)
 
             userToken = postRequest.get("userToken")
             accountId = self.redisCacheService.getValueByKey(userToken)
 
             # 게시글 수정 요청 처리
-            updatedBoard = self.boardService.requestModify(pk, title, content, accountId)
+            updatedBoard = self.boardService.requestModify(pk, carModel, rating, accountId)
 
             return JsonResponse(updatedBoard, status=status.HTTP_200_OK)
 

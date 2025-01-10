@@ -33,7 +33,7 @@ class BoardServiceImpl(BoardService):
         paginatedFilteringBoardList = [
             {
                 "boardId": board.id,
-                "title": board.title,
+                "carModel": board.carModel,
                 "nickname": board.writer.nickname,  # writer 객체의 nickname 가져오기
                 "createDate": board.create_date.strftime("%Y-%m-%d %H:%M"),
             }
@@ -42,9 +42,9 @@ class BoardServiceImpl(BoardService):
 
         return paginatedFilteringBoardList, totalItems, totalPages
 
-    def requestCreate(self, title, content, accountId):
-        if not title or not content:
-            raise ValueError("Title and content are required fields.")
+    def requestCreate(self, carModel, rating, accountId):
+        if not carModel or not rating:
+            raise ValueError("Car model and rating are required fields.")
         if not accountId:
             raise ValueError("Account ID is required.")
 
@@ -60,15 +60,15 @@ class BoardServiceImpl(BoardService):
 
         # 4. Board 객체 생성 및 저장
         board = Board(
-            title=title,
-            content=content,
+            carModel=carModel,
+            rating=rating,
             writer=accountProfile)  # ForeignKey로 연결된 account_profile)
         savedBoard = self.__boardRepository.save(board)
 
         # 5. 응답 데이터 구조화
         return {
             "boardId": savedBoard.id,
-            "title": savedBoard.title,
+            "carModel": savedBoard.carModel,
             "writerNickname": savedBoard.writer.nickname,
             "createDate": savedBoard.create_date.strftime("%Y-%m-%d %H:%M"),
         }
@@ -78,14 +78,14 @@ class BoardServiceImpl(BoardService):
         if board:
             return {
                 "boardId": board.id,
-                "title": board.title,
-                "content": board.content,
+                "carModel": board.carModel,
+                "rating": board.rating,
                 "createDate": board.create_date.strftime("%Y-%m-%d %H:%M"),
                 "nickname": board.writer.nickname
             }
         return None
 
-    def requestModify(self, boardId, title, content, accountId):
+    def requestModify(self, boardId, carModel, rating, accountId):
         try:
             account = self.__accountRepository.findById(accountId)
             accountProfile = self.__accountProfileRepository.findByAccount(account)
@@ -97,8 +97,8 @@ class BoardServiceImpl(BoardService):
                 raise ValueError("You are not authorized to modify this board.")
 
             # 제목과 내용 업데이트
-            board.title = title
-            board.content = content
+            board.carModel = carModel
+            board.rating = rating
 
             # 게시글 저장 (수정)
             updatedBoard = self.__boardRepository.save(board)
@@ -106,8 +106,8 @@ class BoardServiceImpl(BoardService):
             # 수정된 게시글 반환
             return {
                 "boardId": updatedBoard.id,
-                "title": updatedBoard.title,
-                "content": updatedBoard.content,
+                "carModel": updatedBoard.carModel,
+                "rating": updatedBoard.rating,
                 "writerNickname": updatedBoard.writer.nickname,  # 작성자의 닉네임
                 "createDate": updatedBoard.create_date.strftime("%Y-%m-%d %H:%M"),
             }
