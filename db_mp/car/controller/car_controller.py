@@ -32,19 +32,22 @@ class CarController(viewsets.ViewSet):
         carTitle = postRequest.get('carTitle')
         carPrice = postRequest.get('carPrice')
         carDescription = postRequest.get('carDescription')
+        carCategory = postRequest.get('carCategory')
         print(f"carImage: {carImage}, "
               f"carTitle: {carTitle}, "
               f"carPrice: {carPrice}, "
-              f"carDescription: {carDescription}")
+              f"carDescription: {carDescription}, "
+              f"carCategory: {carCategory}")
 
-        if not all([carImage, carTitle, carPrice, carDescription]):
+        if not all([carImage, carTitle, carPrice, carDescription, carCategory]):
             return JsonResponse({"error": '모든 내용을 채워주세요!'}, status=status.HTTP_400_BAD_REQUEST)
 
         savedCar = self.carService.createCar(
             carTitle,
             carPrice,
             carDescription,
-            carImage
+            carImage,
+            carCategory
         )
 
         return JsonResponse({"data": savedCar}, status=status.HTTP_200_OK)
