@@ -27,3 +27,11 @@ class AccountProfileRepositoryImpl(AccountProfileRepository):
 
         except IntegrityError:
             raise IntegrityError(f"Nickname '{nickname}' 이미 존재함.")
+
+    def findByAccount(self, account):
+        try:
+            # 주어진 Account 객체에 해당하는 AccountProfile을 조회
+            return AccountProfile.objects.get(account=account)
+        except AccountProfile.DoesNotExist:
+            # 만약 해당하는 AccountProfile이 없으면 None을 반환
+            return None
