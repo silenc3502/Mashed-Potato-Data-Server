@@ -23,9 +23,22 @@ class AccountRepositoryImpl(AccountRepository):
         return cls.__instance
 
     def save(self, email):
-        defaultRoleType, created = AccountRoleType.objects.get_or_create(roleType=RoleType.NORMAL)
+        print(f"email: {email}")
+        defaultRoleType = AccountRoleType.objects.filter(role_type=RoleType.NORMAL).first()
 
-        account = Account(email=email, roleType=defaultRoleType)
+        # 만약 기본 역할이 없다면, 새로 생성
+        if not defaultRoleType:
+            defaultRoleType = AccountRoleType(role_type=RoleType.NORMAL)
+            defaultRoleType.save()
+            print(f"Created new defaultRoleType: {defaultRoleType}")
+        else:
+            print(f"Found existing defaultRoleType: {defaultRoleType}")
+
+        print(f"defaultRoleType: {defaultRoleType}")
+
+        account = Account(email=email, role_type=defaultRoleType)
+        print(f"account: {account}")
+
         account.save()
         return account
 
@@ -40,4 +53,3 @@ class AccountRepositoryImpl(AccountRepository):
             return Account.objects.get(email=email)
         except ObjectDoesNotExist:
             raise ObjectDoesNotExist(f"Account {email} 존재하지 않음.")
-
