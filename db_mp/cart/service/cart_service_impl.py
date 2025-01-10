@@ -9,7 +9,6 @@ from cart.service.cart_service import CartService
 from car.entity.car import Car
 from car.entity.car_image import CarImage
 from car.entity.car_price import CarPrice
-from car.entity.car_category import CarCategory
 from car.repository.car_repository_impl import CarRepositoryImpl
 
 
@@ -84,7 +83,7 @@ class CartServiceImpl(CartService):
                     "price": cart.price,
                     "image": cart.image,
                     "quantity": cart.quantity,
-                    "category": cart.category,
+
                 }
                 for cart in paginatedCartList
             ]
