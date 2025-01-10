@@ -34,6 +34,7 @@ class BoardServiceImpl(BoardService):
             {
                 "boardId": board.id,
                 "carModel": board.carModel,
+                "rating" : board.rating,
                 "nickname": board.writer.nickname,  # writer 객체의 nickname 가져오기
                 "createDate": board.create_date.strftime("%Y-%m-%d %H:%M"),
             }
