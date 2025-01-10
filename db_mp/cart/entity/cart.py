@@ -3,7 +3,7 @@ from django.db import models
 from account.entity.account import Account
 from car.entity.car import Car
 
-# GameSoftware을 Car로 바꿔야함
+
 
 class Cart(models.Model):
     id = models.AutoField(primary_key=True)
