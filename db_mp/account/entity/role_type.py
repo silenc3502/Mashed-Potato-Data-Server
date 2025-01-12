@@ -3,4 +3,4 @@ from django.db import models
 class RoleType(models.TextChoices):
     ADMIN = 'ADMIN'
     NORMAL = 'NORMAL'
-    # SUBSCRIBE = 'SUBSCRIBE'  # 구독자
+    SUBSCRIBE = 'SUBSCRIBE'  # 구독자
