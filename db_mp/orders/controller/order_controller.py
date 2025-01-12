@@ -44,5 +44,5 @@ class OrderController(viewsets.ViewSet):
             )
 
         except Exception as e:
-            print(f"주문 처리 중 오류 발생: {e}")
+            print(f"주문 처리 중 오류 발생 ORDER: {e}")
             return JsonResponse({"error": "서버 내부 오류", "success": False}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
