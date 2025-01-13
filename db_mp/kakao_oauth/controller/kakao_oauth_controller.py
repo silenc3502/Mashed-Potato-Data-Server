@@ -28,24 +28,33 @@ class KakaoOauthController(viewsets.ViewSet):
         serializer = KakaoOauthAccessTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         code = serializer.validated_data['code']
+        print(f"code: {code}")
 
         try:
             tokenResponse = self.kakaoOauthService.requestAccessToken(code)
             accessToken = tokenResponse['access_token']
+            print(f"accessToken: {accessToken}")
 
             with transaction.atomic():
                 userInfo = self.kakaoOauthService.requestUserInfo(accessToken)
                 nickname = userInfo.get('properties', {}).get('nickname', '')
                 email = userInfo.get('kakao_account', {}).get('email', '')
+                print(f"email: {email}, nickname: {nickname}")
 
                 account = self.accountService.checkEmailDuplication(email)
+                print(f"account: {account}")
+
                 if account is None:
                     account = self.accountService.createAccount(email)
+                    print(f"account: {account}")
+
                     accountProfile = self.accountProfileService.createAccountProfile(
                         account.getId(), nickname
                     )
+                    print(f"accountProfile: {accountProfile}")
 
                 userToken = self.__createUserTokenWithAccessToken(account, accessToken)
+                print(f"userToken: {userToken}")
 
             return JsonResponse({'userToken': userToken})
 
