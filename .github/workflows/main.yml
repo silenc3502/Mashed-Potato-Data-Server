@@ -59,7 +59,7 @@ jobs:
 
     - name: Build and Push Docker Image
       run: |
-        cd my_backend
+        cd db_mp
         docker buildx build --no-cache --platform linux/arm64 -f Dockerfile -t ${{ env.DOCKER_IMAGE }} --push .
 
   deploy:
