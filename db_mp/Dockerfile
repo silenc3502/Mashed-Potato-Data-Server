@@ -4,8 +4,13 @@ FROM python:3.10-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies (optional)
+# Install system dependencies for mysqlclient
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    libmysqlclient-dev \
+    pkg-config \
     curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
