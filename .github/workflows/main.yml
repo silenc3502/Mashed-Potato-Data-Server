@@ -13,8 +13,8 @@ jobs:
     name: build-app
     runs-on: ubuntu-latest
     steps:
-    # - name: Checkout repository
-    #   uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
     - name: Download wait-for-it.sh
       run: |
