@@ -36,6 +36,7 @@ class KakaoOauthController(viewsets.ViewSet):
             print(f"accessToken: {accessToken}")
 
             with transaction.atomic():
+                print(f"ready to request UserInfo")
                 userInfo = self.kakaoOauthService.requestUserInfo(accessToken)
                 nickname = userInfo.get('properties', {}).get('nickname', '')
                 email = userInfo.get('kakao_account', {}).get('email', '')

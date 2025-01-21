@@ -45,6 +45,7 @@ class KakaoOauthRepositoryImpl(KakaoOauthRepository):
         return response.json()
 
     def getUserInfo(self, accessToken):
+        print(f"getUserInfo -> url: {self.userInfoRequestUri}")
         headers = {'Authorization': f'Bearer {accessToken}'}
         response = requests.post(self.userInfoRequestUri, headers=headers)
         return response.json()
