@@ -50,6 +50,13 @@ class AccountRepositoryImpl(AccountRepository):
 
     def findByEmail(self, email):
         try:
-            return Account.objects.get(email=email)
-        except ObjectDoesNotExist:
-            raise ObjectDoesNotExist(f"Account {email} 존재하지 않음.")
+            print(f"findByEmail -> email: {email}")
+            account = Account.objects.get(email=email)
+            print(f"findByEmail result: {account}")
+            return account
+        except Account.DoesNotExist:
+            print(f"Account with email {email} does not exist.")
+            raise ObjectDoesNotExist(f"Account {email} does not exist.")
+        except Exception as e:
+            print(f"Unexpected error in findByEmail: {e}")
+            raise

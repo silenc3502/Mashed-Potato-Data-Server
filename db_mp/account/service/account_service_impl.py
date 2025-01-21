@@ -27,9 +27,13 @@ class AccountServiceImpl(AccountService):
 
     def checkEmailDuplication(self, email):
         try:
-            return self.__accountRepository.findByEmail(email)
+            print(f"checkEmailDuplication() -> email: {email}")
+            account = self.__accountRepository.findByEmail(email)
+            print(f"checkEmailDuplication result: {account}")
+            return account
 
         except ObjectDoesNotExist:
+            print(f"Account {email} 존재하지 않음.")
             return None
 
     def findEmail(self, accountId):

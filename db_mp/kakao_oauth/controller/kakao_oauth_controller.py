@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -28,12 +29,12 @@ class KakaoOauthController(viewsets.ViewSet):
         serializer = KakaoOauthAccessTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         code = serializer.validated_data['code']
-        print(f"code: {code}")
+        # print(f"code: {code}")
 
         try:
             tokenResponse = self.kakaoOauthService.requestAccessToken(code)
             accessToken = tokenResponse['access_token']
-            print(f"accessToken: {accessToken}")
+            # print(f"accessToken: {accessToken}")
 
             with transaction.atomic():
                 print(f"ready to request UserInfo")
@@ -59,8 +60,17 @@ class KakaoOauthController(viewsets.ViewSet):
 
             return JsonResponse({'userToken': userToken})
 
+        except ObjectDoesNotExist as e:
+            print(f"Account not found: {str(e)}")
+            return JsonResponse({'error': f"Account not found: {str(e)}"}, status=404)
+
+        except ValueError as e:
+            print(f"Validation error: {str(e)}")
+            return JsonResponse({'error': str(e)}, status=400)
+
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            print("Unexpected error in requestAccessToken.")
+            return JsonResponse({'error': "An unexpected error occurred."}, status=500)
 
     def __createUserTokenWithAccessToken(self, account, accessToken):
         try:

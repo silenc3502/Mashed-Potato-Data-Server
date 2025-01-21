@@ -6,7 +6,7 @@ from account.entity.account_role_type import AccountRoleType
 class Account(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=32)
-    roleType = models.ForeignKey(AccountRoleType, on_delete=models.CASCADE)
+    role_type = models.ForeignKey(AccountRoleType, on_delete=models.CASCADE, db_column='role_type_id')
 
     class Meta:
         db_table = 'account'
